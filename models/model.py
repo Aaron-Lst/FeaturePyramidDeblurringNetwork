@@ -88,9 +88,9 @@ class DEBLUR(object):
         pyramid_map = pyramid_network.build_pyramid(pyramid_map, end_points)
 
         with slim.arg_scope([slim.conv2d, slim.conv2d_transpose],
-                    activation_fn=tf.nn.relu, padding='SAME', normalizer_fn=None,
-                    weights_initializer=tf.contrib.layers.xavier_initializer(uniform=True),
-                    weights_regularizer=slim.l2_regularizer(0.0001),
+                    activation_fn=None, padding='SAME', normalizer_fn=None,
+                    weights_initializer=tf.truncated_normal_initializer(stddev=0.001),
+                    weights_regularizer=slim.l2_regularizer(0.00001),
                     biases_initializer=tf.constant_initializer(0.0)):
             up_shape = tf.shape(inp_blur)
             s = tf.image.resize_bilinear(pyramid_map['P1'], [up_shape[1], up_shape[2]], name='C0/upscale')
